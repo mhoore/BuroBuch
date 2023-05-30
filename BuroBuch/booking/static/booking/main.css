@@ -1,6 +1,6 @@
 body {
     background: #fafafa;
-    color: #333333;
+    color: #025c5f;
     margin-top: 5rem;
     max-width: 1900px;
   }
@@ -14,7 +14,7 @@ body {
   }
   
   .bg-steel {
-    background-color: #5f788a;
+    background-color: #0922ad;
   }
   
   .site-header .navbar-nav .nav-link {
@@ -42,7 +42,7 @@ body {
   }
   
   a.article-title:hover {
-    color: #428bca;
+    color: #0922ad;
     text-decoration: none;
   }
   

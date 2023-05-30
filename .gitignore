@@ -4,7 +4,10 @@ __pycache__/
 *$py.class
 
 # virtual environment
-venv/
+BuroBuch/media/
+
+# media
+media
 
 # C extensions
 *.so

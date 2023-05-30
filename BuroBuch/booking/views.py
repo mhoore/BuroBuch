@@ -35,6 +35,11 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
     form_class = BookingCreateForm
     success_url = '/'
 
+    def get_form_kwargs(self, **kwargs):
+        form_kwargs = super(BookingCreateView, self).get_form_kwargs(**kwargs)
+        form_kwargs["username"] = self.request.user.username
+        return form_kwargs
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
@@ -77,7 +82,6 @@ def get_choices(request):
                 'choices': {
                     obj.id: {
                         'name': obj.name,
-                        'shape': '' if obj.map == None else obj.map.shape,
                         'coords': '' if obj.map == None else obj.map.coords
                     } for obj in objects.order_by('name')
                 }

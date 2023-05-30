@@ -5,8 +5,7 @@ from django.core.validators import validate_comma_separated_integer_list
 
 class Map(models.Model):
     name = models.CharField(max_length=30, unique=True)
-    shape = models.CharField(max_length=20, null=True, blank=True, default='rect')
-    coords = models.CharField(max_length=40, null=True, blank=True, default='0,0,0,0', validators=[validate_comma_separated_integer_list,])
+    coords = models.CharField(max_length=100, null=True, blank=True, default='0,0, 0,0, 0,0, 0,0', validators=[validate_comma_separated_integer_list,])
 
     def __str__(self):
         return f'{self.name}'
