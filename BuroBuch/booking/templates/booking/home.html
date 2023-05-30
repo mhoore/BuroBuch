@@ -3,12 +3,19 @@
   <div>
     <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'booking-create' %}">Book a desk</a>
   </div>
-  {% for booking in bookings %}
+  {% for bpd in bookings_per_date %}
     <article class="media content-section">
       <div class="media-body">
         <div class="article-metadata">
-          <a class="mr-2" href="{% url 'booking-detail' booking.id %}">{{ booking.desk.name }}</a>
-          <small class="text-muted">on {{ booking.date|date:"F d, Y" }} booked for {{ booking.user }}</small>
+          <h3 class="mr-2">{{ bpd.0.date|date:"F d, Y" }}</h3>
+          {% for booking in bpd %}
+            <small class="text-muted">Desk: </small> <a class="mr-2" href="{% url 'booking-detail' booking.id %}">{{ booking.desk.name }}</a>
+            <small class="text-muted">Room: </small> {{ booking.desk.room.name }}
+            <small class="text-muted">Department: </small> {{ booking.desk.room.department.name }}
+            <small class="text-muted">Building: </small> {{ booking.desk.room.department.building.name }}
+            <small class="text-muted">booked for </small> {{ booking.user }}
+            <br>
+          {% endfor %}
         </div>
       </div>
     </article>
@@ -33,3 +40,14 @@
     {% endif %}
   {% endif %}
 {% endblock content %}
+{% block sidebar %}
+  <h4>My Bookings</h4>
+    <div class="article-metadata">
+      {% for booking in my_bookings %}
+        {{ booking.date|date:"F d, Y" }} <a class="mr-2" href="{% url 'booking-detail' booking.id %}">{{ booking.desk.name }}</a>          
+        <br>
+        <small class="text-muted">{{ booking.desk.room.name }} - {{ booking.desk.room.department.name }} - {{ booking.desk.room.department.building.name }}</small>
+        <hr>
+      {% endfor %}
+    </div>
+{% endblock sidebar %}

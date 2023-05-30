@@ -27,6 +27,20 @@ class BookingListView(ListView):
     ordering = ['date']
     paginate_by = 10
 
+    def get_context_data(self,**kwargs):
+        context = super(BookingListView,self).get_context_data(**kwargs)
+        bookings = Booking.objects.all().order_by('date')
+        dates = []
+        bookings_per_date = []
+        for b in bookings:
+            if not b.date in dates:
+                dates.append(b.date)
+                bookings_per_date.append([])
+            bookings_per_date[-1].append(b)
+        context['bookings_per_date'] = bookings_per_date
+        context['my_bookings'] = Booking.objects.filter(user=self.request.user).order_by('date')
+        return context
+
 class BookingDetailView(DetailView):
     model = Booking
 
