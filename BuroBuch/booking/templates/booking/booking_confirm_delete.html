@@ -5,7 +5,7 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Cancel Booking</legend>
-                <h2>Are you sure you want to cancel the booking "{{ object.title }}"</h2>
+                Are you sure you want to cancel the booking for desk {{ object.desk.name }} on {{ object.date }}?
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-danger" type="submit">Yes, Cancel</button>

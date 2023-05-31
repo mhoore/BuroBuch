@@ -80,7 +80,7 @@ def get_choices(request):
             date = request.POST.get('date')
             image = None
             objects = []
-            booked_objects = []
+            bookings = []
             if element_id == 'id_department':
                 image = Building.objects.get(id=parent_id).image
                 objects = Department.objects.filter(building=parent_id).order_by('name')
@@ -104,11 +104,11 @@ def get_choices(request):
                         'coords': '' if obj.map == None else obj.map.coords
                     } for obj in objects
                 },
-                'booked_choices': {
-                    obj.id: {
-                        'name': obj.name,
-                        'coords': '' if obj.map == None else obj.map.coords
-                    } for obj in booked_objects
+                'booked_choices': { # only for desks
+                    b.desk.id: {
+                        'name': b.user.username,
+                        'coords': '' if b.desk.map == None else b.desk.map.coords
+                    } for b in bookings
                 }
             }
             return JsonResponse(json.dumps(data), safe=False)

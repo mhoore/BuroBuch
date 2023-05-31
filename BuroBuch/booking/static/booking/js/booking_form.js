@@ -112,6 +112,7 @@ function load_map(choice_element_id, image_url, choices, booked_choices) {
         var d = {};
         d['key'] = id;
         d['fillColor'] = '45af5f';
+        d['toolTip'] = id;
         mapster_areas.push(d);
 
         map.appendChild(area);
@@ -130,6 +131,7 @@ function load_map(choice_element_id, image_url, choices, booked_choices) {
         var d = {};
         d['key'] = id;
         d['fillColor'] = 'ff0000';
+        d['toolTip'] = id;
         mapster_areas.push(d);
 
         map.appendChild(area);

@@ -1,9 +1,14 @@
 {% extends "booking/base.html" %}
 {% block content %}
+  <div class="content-section" id="id_map_div">
+    <img id="id_img" src="{{ object.desk.room.image.url }}" alt="Plan" style="width:100%;">
+  </div>
+{% endblock content %}
+{% block sidebar %}
   <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-2" href="#">{{ object.user }}</a>
+        <a class="mr-2" href="#">Booked desk details</a>
         <small class="text-muted">{{ object.date|date:"F d, Y" }}</small>
         {% if object.user == user %}
           <div>
@@ -11,8 +16,16 @@
           </div>
         {% endif %}
       </div>
-      <h2 class="article-title">{{ object.desk.name }}</h2>
-      <p class="article-content">{{ object.desk.room.name }}</p>
+      Desk: {{ booking.desk.name }}
+      <br>
+      Room: {{ booking.desk.room.name }}
+      <br>
+      Department: {{ booking.desk.room.department.name }}
+      <br>
+      Building: {{ booking.desk.room.department.building.name }}
+      <br>
+      Booked for {{ booking.user }}
+      <br>
     </div>
   </article>
-{% endblock content %}
+{% endblock sidebar %}
