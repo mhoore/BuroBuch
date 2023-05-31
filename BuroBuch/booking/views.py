@@ -77,19 +77,24 @@ def get_choices(request):
         try:
             parent_id = request.POST.get('parent_id')
             element_id = request.POST.get('element_id')
-            objects = None
+            date = request.POST.get('date')
             image = None
+            objects = []
+            booked_objects = []
             if element_id == 'id_department':
                 image = Building.objects.get(id=parent_id).image
-                objects = Department.objects.filter(building=parent_id)
+                objects = Department.objects.filter(building=parent_id).order_by('name')
             elif element_id == 'id_room':
                 image = Department.objects.get(id=parent_id).image
-                objects = Room.objects.filter(department=parent_id)
+                objects = Room.objects.filter(department=parent_id).order_by('name')
             elif element_id == 'id_desk':
                 image = Room.objects.get(id=parent_id).image
-                objects = Desk.objects.filter(room=parent_id)
+                objects = Desk.objects.filter(room=parent_id).order_by('name')
+                bookings = Booking.objects.filter(desk__in=objects, date=date)
+                booked_objects = [b.desk for b in bookings]
+                objects = [obj for obj in objects if not obj in booked_objects]
             else:
-                objects = Building.objects.all()
+                objects = Building.objects.all().order_by('name')
 
             data = {
                 'image_url': '' if image == None else image.url,
@@ -97,7 +102,13 @@ def get_choices(request):
                     obj.id: {
                         'name': obj.name,
                         'coords': '' if obj.map == None else obj.map.coords
-                    } for obj in objects.order_by('name')
+                    } for obj in objects
+                },
+                'booked_choices': {
+                    obj.id: {
+                        'name': obj.name,
+                        'coords': '' if obj.map == None else obj.map.coords
+                    } for obj in booked_objects
                 }
             }
             return JsonResponse(json.dumps(data), safe=False)
