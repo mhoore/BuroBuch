@@ -1,8 +1,8 @@
 $(document).ready(function(){
     add_events();
-    room = document.getElementById('id_room').value;
-    if (room != "---") {
-        reload_objects(room, document.getElementById('id_desk'));
+    room = document.getElementById('id_room');
+    if (room.selectedIndex != 0) {
+        reload_objects(room.value, document.getElementById('id_desk'));
     }
 })
 
