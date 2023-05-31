@@ -9,7 +9,8 @@
     <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Booking</legend>
+            Select your desired desk and date.
+            <hr>
             {{ form|crispy }}
         </fieldset>
         <div class="form-group">

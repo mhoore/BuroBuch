@@ -15,7 +15,7 @@ from .forms import *
 
 def home(request):
     context = {
-        'bookings': Booking.objects.all()
+        'bookings': Booking.objects.filter(date__gte=datetime.date.today()),
     }
     return render(request, 'booking/home.html', context)
 
@@ -29,16 +29,20 @@ class BookingListView(ListView):
 
     def get_context_data(self,**kwargs):
         context = super(BookingListView,self).get_context_data(**kwargs)
-        bookings = Booking.objects.all().order_by('date')
+        bookings = Booking.objects.filter(date__gte=datetime.date.today()).order_by('date')
+        desks_count = Desk.objects.count()
         dates = []
         bookings_per_date = []
         for b in bookings:
             if not b.date in dates:
                 dates.append(b.date)
-                bookings_per_date.append([])
-            bookings_per_date[-1].append(b)
+                bookings_per_date.append({'available': desks_count, 'booked': []})
+            bookings_per_date[-1]['booked'].append(b)
+            bookings_per_date[-1]['available'] -= 1
+
         context['bookings_per_date'] = bookings_per_date
-        context['my_bookings'] = Booking.objects.filter(user=self.request.user).order_by('date')
+        if self.request.user.is_authenticated:
+            context['my_bookings'] = Booking.objects.filter(user=self.request.user, date__gte=datetime.date.today()).order_by('date')
         return context
 
 class BookingDetailView(DetailView):
@@ -48,6 +52,11 @@ class BookingCreateView(LoginRequiredMixin, CreateView):
     model = Booking
     form_class = BookingCreateForm
     success_url = '/'
+
+    def get_context_data(self,**kwargs):
+        context = super(BookingCreateView,self).get_context_data(**kwargs)
+        context['title'] = 'Book a Desk'
+        return context
 
     def get_form_kwargs(self, **kwargs):
         form_kwargs = super(BookingCreateView, self).get_form_kwargs(**kwargs)
