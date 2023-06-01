@@ -36,6 +36,7 @@ function add_events() {
 }
 
 function reload_objects(parent_id, element, date='') {
+    removeToolTips();
     removeOptions(element.id);
     removeMap();
     $.ajax({
@@ -91,7 +92,6 @@ function load_map(choice_element_id, image_url, choices, booked_choices) {
     map.id = "id_map";
 
     var mapster_areas = [];
-    console.log(img.width);
     for (let key in choices) {
         var id = choices[key]['name'];
         var area = document.createElement('area');
@@ -153,10 +153,9 @@ function load_map(choice_element_id, image_url, choices, booked_choices) {
     });
 }
 
-function scale_coords(coords_str, factor) {
-    var coords_arr = coords_str.split(',');
-    for(i=0; i < coords_arr.length; i++) {
-        coords_arr[i] *= factor;
+function removeToolTips() {
+    var elements = document.getElementsByClassName('mapster_tooltip');
+    for(let i=0; i < elements.length; i++) {
+        elements[i].remove();
     }
-    return coords_arr.toString();
 }

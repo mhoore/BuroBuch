@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from django.core.validators import validate_comma_separated_integer_list
 
 class Building(models.Model):
-    name = models.CharField(max_length=30, unique=True)
-    address = models.CharField(max_length=30)
+    name = models.CharField(max_length=40, unique=True)
+    address = models.CharField(max_length=120)
     country = models.CharField(max_length=30)
     image = models.ImageField(null=True, blank=True, default=None, upload_to='buildings')
 

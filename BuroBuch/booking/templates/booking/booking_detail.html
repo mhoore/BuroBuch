@@ -1,31 +1,47 @@
 {% extends "booking/base.html" %}
 {% block content %}
+  <h4>
+    Room status for desk:
+    <br>
+    <font color="#051d49"> {{ booking.desk }} </font>
+    <br>
+    <font color="green"> {{ object.date|date:"F d, Y" }} </font>
+  </h4>
   <div class="content-section" id="id_map_div">
-    <img id="id_img" src="{{ object.desk.room.image.url }}" alt="Plan" style="width:100%;">
+    <img id="id_img" src="{{ object.desk.room.image.url }}" alt="Plan" usemap="#plan" class="image_map" style="width:100%;">
+    <map name="plan" id="id_map">
+      <area shape="poly" coords="{{ object.desk.coords }}" href="#" id="{{ object.desk.name }}" data-hkey="{{ object.user.username }}", data-color="ffff00">
+      {% for booking in bookings %}
+        <area shape="poly" coords="{{ booking.desk.coords }}" href="#" id="{{ booking.desk.name }}" data-hkey="{{ booking.user.username }}", data-color="ff0000">
+      {% endfor %}
   </div>
 {% endblock content %}
 {% block sidebar %}
+  {% if object.user == user %}
+  <div>
+    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'booking-delete' object.id %}">Cancel</a>
+  </div>
+  {% endif %}
   <article class="media content-section">
     <div class="media-body">
-      <div class="article-metadata">
-        <a class="mr-2" href="#">Booked desk details</a>
-        <small class="text-muted">{{ object.date|date:"F d, Y" }}</small>
-        {% if object.user == user %}
-          <div>
-            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'booking-delete' object.id %}">Cancel</a>
-          </div>
-        {% endif %}
-      </div>
-      Desk: {{ booking.desk.name }}
+      <h5>Booking Details:</h5>
+      Date: <font color="green"> {{ object.date|date:"F d, Y" }} </font>
       <br>
-      Room: {{ booking.desk.room.name }}
+      Desk: <font color="green"> {{ booking.desk.name }} </font>
       <br>
-      Department: {{ booking.desk.room.department.name }}
+      Booked for: <font color="green"> {{ object.user.username }} </font>
+      <hr>
+      Room: <font color="green"> {{ booking.desk.room.name }} </font>
       <br>
-      Building: {{ booking.desk.room.department.building.name }}
+      Department: <font color="green"> {{ booking.desk.room.department.name }} </font>
       <br>
-      Booked for {{ booking.user }}
+      Building: <font color="green"> {{ booking.desk.room.department.building.name }} </font>
+      <br>
+      Address: <font color="green"> {{ booking.desk.room.department.building.address }} </font>
+      <br>
+      Country: <font color="green"> {{ booking.desk.room.department.building.country }} </font>
       <br>
     </div>
   </article>
+  <script src="/static/booking/js/booking_detail.js"></script>
 {% endblock sidebar %}

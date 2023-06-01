@@ -49,6 +49,12 @@ class BookingListView(ListView):
 class BookingDetailView(DetailView):
     model = Booking
 
+    def get_context_data(self,**kwargs):
+        context = super(BookingDetailView,self).get_context_data(**kwargs)
+        bookings = Booking.objects.filter(date=self.object.date)
+        context['bookings'] = [b for b in bookings if b.desk.room == self.object.desk.room and b.desk != self.object.desk]
+        return context
+
 class BookingCreateView(LoginRequiredMixin, CreateView):
     model = Booking
     form_class = BookingCreateForm
