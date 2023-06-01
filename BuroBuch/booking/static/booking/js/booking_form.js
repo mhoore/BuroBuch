@@ -96,8 +96,7 @@ function load_map(choice_element_id, image_url, choices, booked_choices) {
         var id = choices[key]['name'];
         var area = document.createElement('area');
         area.shape = 'poly';
-        coords = choices[key]['coords'];
-        area.coords = scale_coords(coords, 6.88);
+        area.coords = choices[key]['coords'].toString();
         area.href = '#';
         area.id = id;
         area.dataset.hkey = id;
@@ -123,8 +122,7 @@ function load_map(choice_element_id, image_url, choices, booked_choices) {
         var id = booked_choices[key]['name'];
         var area = document.createElement('area');
         area.shape = 'poly';
-        coords = booked_choices[key]['coords'];
-        area.coords = scale_coords(coords, 6.88);
+        area.coords = booked_choices[key]['coords'].toString();
         area.href = '#';
         area.id = id;
         area.dataset.hkey = id;

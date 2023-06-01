@@ -36,8 +36,9 @@ class BookingListView(ListView):
         for b in bookings:
             if not b.date in dates:
                 dates.append(b.date)
-                bookings_per_date.append({'available': desks_count, 'booked': []})
-            bookings_per_date[-1]['booked'].append(b)
+                bookings_per_date.append({'available': desks_count, 'booked': 0, 'bookings': []})
+            bookings_per_date[-1]['bookings'].append(b)
+            bookings_per_date[-1]['booked'] += 1
             bookings_per_date[-1]['available'] -= 1
 
         context['bookings_per_date'] = bookings_per_date
@@ -110,13 +111,13 @@ def get_choices(request):
                 'choices': {
                     obj.id: {
                         'name': obj.name,
-                        'coords': '' if obj.map == None else obj.map.coords
+                        'coords': '' if obj.coords == None else obj.coords
                     } for obj in objects
                 },
                 'booked_choices': { # only for desks
                     b.desk.id: {
                         'name': b.user.username,
-                        'coords': '' if b.desk.map == None else b.desk.map.coords
+                        'coords': '' if b.desk.coords == None else b.desk.coords
                     } for b in bookings
                 }
             }

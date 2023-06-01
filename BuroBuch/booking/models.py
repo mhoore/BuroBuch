@@ -1,14 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import validate_comma_separated_integer_list
-# Create your models here.
-
-class Map(models.Model):
-    name = models.CharField(max_length=30, unique=True)
-    coords = models.CharField(max_length=100, null=True, blank=True, default='0,0, 0,0, 0,0, 0,0', validators=[validate_comma_separated_integer_list,])
-
-    def __str__(self):
-        return f'{self.name}'
 
 class Building(models.Model):
     name = models.CharField(max_length=30, unique=True)
@@ -26,36 +18,36 @@ class Department(models.Model):
     name = models.CharField(max_length=30)
     building = models.ForeignKey(Building, blank=False, null=False, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, default=None, upload_to='departments')
-    map = models.ForeignKey(Map, blank=True, null=True, on_delete=models.SET_NULL) # map to parent image
+    coords = models.CharField(max_length=1000, null=True, blank=True, default='', validators=[validate_comma_separated_integer_list,]) # coords in the parent image
 
     class Meta:
         unique_together = ['name', 'building',]
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.building.name}: {self.name}'
 
 class Room(models.Model):
     name = models.CharField(max_length=30)
     department = models.ForeignKey(Department, blank=False, null=False, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, default=None, upload_to='rooms')
-    map = models.ForeignKey(Map, blank=True, null=True, on_delete=models.SET_NULL) # map to parent image
+    coords = models.CharField(max_length=1000, null=True, blank=True, default='', validators=[validate_comma_separated_integer_list,]) # coords in the parent image
 
     class Meta:
         unique_together = ['name', 'department',]
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.department.building.name}: {self.department.name}: {self.name}'
 
 class Desk(models.Model):
     name = models.CharField(max_length=30)
     room = models.ForeignKey(Room, blank=False, null=False, on_delete=models.CASCADE)
-    map = models.ForeignKey(Map, blank=True, null=True, on_delete=models.SET_NULL) # map to parent image
+    coords = models.CharField(max_length=1000, null=True, blank=True, default='', validators=[validate_comma_separated_integer_list,]) # coords in the parent image
 
     class Meta:
         unique_together = ['name', 'room',]
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.room.department.building.name}: {self.room.department.name}: {self.room.name}: {self.name}'
 
 class Booking(models.Model):
     user = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE)

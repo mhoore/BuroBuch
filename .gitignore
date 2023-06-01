@@ -3,11 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# virtual environment
+# ignore private DB info
 BuroBuch/media/
-
-# media
-media
+media/
+resources/
 
 # C extensions
 *.so

@@ -4,10 +4,10 @@
   {% for bpd in bookings_per_date %}
     <article class="media content-section">
       <div class="media-body">
-        <h4 class="mr-2">{{ bpd.booked.0.date|date:"F d, Y" }}</h4>
-        {{ bpd.available }} desks available.
+        <h4 class="mr-2">{{ bpd.bookings.0.date|date:"F d, Y" }}</h4>
+        {{ bpd.booked }} desks booked. {{ bpd.available }} desks available.
         <br>
-        {% for booking in bpd.booked %}
+        {% for booking in bpd.bookings %}
           <small class="text-muted">Desk: </small> <a class="mr-2" href="{% url 'booking-detail' booking.id %}">{{ booking.desk.name }}</a>
           <small class="text-muted">Room: </small> {{ booking.desk.room.name }}
           <small class="text-muted">Department: </small> {{ booking.desk.room.department.name }}
