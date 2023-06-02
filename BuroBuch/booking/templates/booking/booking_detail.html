@@ -1,11 +1,7 @@
 {% extends "booking/base.html" %}
 {% block content %}
   <h4>
-    Room status for desk:
-    <br>
-    <font color="#051d49"> {{ booking.desk }} </font>
-    <br>
-    <font color="green"> {{ object.date|date:"F d, Y" }} </font>
+    Room status for desk <font color="#051d49"> "{{ booking.desk.name }}" </font> on <font color="green"> {{ object.date|date:"F d, Y" }} </font>
   </h4>
   <div class="content-section" id="id_map_div">
     <img id="id_img" src="{{ object.desk.room.image.url }}" alt="Plan" usemap="#plan" class="image_map" style="width:100%;">

@@ -137,7 +137,7 @@ function load_map(choice_element_id, image_url, choices, booked_choices) {
     }
 
     document.getElementById('id_map_div').appendChild(map);
-    
+
     $('#id_img').mapster({
         stroke: true,
         strokeColor: "000000",
@@ -145,7 +145,7 @@ function load_map(choice_element_id, image_url, choices, booked_choices) {
         strokeOpacity: 0.8,
         strokeWidth: 1,
         singleSelect: true,
-        staticState: true,
+        staticState: choice_element_id === "id_desk",
         mapKey: 'data-hkey',
         showToolTip: true,
         toolTipClose: ["tooltip-click", "area-click"],
